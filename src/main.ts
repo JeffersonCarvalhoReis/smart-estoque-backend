@@ -7,7 +7,13 @@ async function bootstrap() {
 
   process.env.TZ = '-03:00';
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // remove props não-declaradas no DTO
+      forbidNonWhitelisted: false, // true para lançar erro em vez de apenas remover
+      transform: true, // transforma payload para instância do DTO
+    }),
+  );
 
   app.enableCors();
 
